@@ -1,0 +1,19 @@
+{
+  "name": "go-app",
+  "environments": {
+    "production": {
+      "services": [
+        {
+          "name": "go-app",
+          "image": "user/app:latest",
+          "ports": [
+            {
+              "port": 8080,
+              "protocol": "TCP"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
