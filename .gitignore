@@ -23,3 +23,22 @@ go.work.sum
 
 # env file
 .env
+.env.local
+.env.development
+
+# IDE配置
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 编译产物
+bin/
+dist/
+*.exe
+*.dll
+*.so
+*.test
+
+# 依赖目录
+vendor/

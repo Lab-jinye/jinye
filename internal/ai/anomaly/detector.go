@@ -4,8 +4,7 @@ import (
 	"context"
 	"math"
 
-	"github.com/bytedance/eino"
-	"github.com/bytedance/eino/model"
+	"github.com/cloudwego/eino"
 	"github.com/jinye/securityai/internal/domain/entity"
 	"github.com/jinye/securityai/internal/domain/repository"
 )
@@ -13,7 +12,7 @@ import (
 // AnomalyDetector represents the anomaly detection engine
 type AnomalyDetector struct {
 	engine     *eino.Engine
-	model      model.Model
+	model      *eino.Model
 	repository repository.EventRepository
 	vectorRepo repository.VectorRepository
 	threshold  float32

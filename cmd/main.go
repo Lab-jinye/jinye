@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bytedance/eino"
+	"github.com/cloudwego/eino"
 	"github.com/gin-gonic/gin"
 	"github.com/jinye/securityai/api/handler"
 	"github.com/jinye/securityai/internal/ai/anomaly"
