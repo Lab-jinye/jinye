@@ -109,32 +109,38 @@ func (p *LogProcessor) BatchProcessLogs(ctx context.Context, logs []string) erro
 func (p *LogProcessor) parseLog(rawLog string) (*entity.SecurityEvent, error) {
 	event := entity.NewSecurityEvent()
 	event.RawData = rawLog
-
-	// TODO: Implement actual log parsing logic based on your log format
-	// This is a placeholder implementation
-	var logData map[string]interface{}
+	
+	var logData struct {
+		Timestamp   string `json:"timestamp"`
+		SourceIP    string `json:"source_ip"`
+		DestIP      string `json:"dest_ip"`
+		Protocol    string `json:"protocol"`
+		EventType   string `json:"event_type"`
+		Description string `json:"description"`
+	}
+	
 	if err := json.Unmarshal([]byte(rawLog), &logData); err != nil {
 		return nil, err
 	}
-
-	// Map fields from logData to event
-	if timestamp, ok := logData["timestamp"].(string); ok {
-		if t, err := time.Parse(time.RFC3339, timestamp); err == nil {
-			event.Timestamp = t
-		}
+	
+	// Parse timestamp
+	if t, err := time.Parse(time.RFC3339, logData.Timestamp); err == nil {
+		event.Timestamp = t
 	}
-
-	if sourceIP, ok := logData["source_ip"].(string); ok {
-		event.SourceIP = sourceIP
-	}
-
-	// ... map other fields
-
+	
+	// Map other fields
+	event.SourceIP = logData.SourceIP
+	event.DestIP = logData.DestIP
+	event.Protocol = logData.Protocol
+	event.EventType = logData.EventType
+	event.Description = logData.Description
+	
 	return event, nil
 }
 
 // generateCacheKey generates a cache key for deduplication
 func (p *LogProcessor) generateCacheKey(event *entity.SecurityEvent) string {
-	return "event:" + event.SourceIP + ":" + event.DestIP + ":" +
-		event.Protocol + ":" + string(event.Timestamp.Unix())
+	// Using a simplified key for demonstration, consider more unique fields in a real scenario
+	// Using timestamp up to minute to group events within a short time frame
+	return "event:" + event.SourceIP + ":" + event.DestIP + ":" + event.Protocol + ":" + event.EventType + ":" + event.Timestamp.Format("200601021504")
 }
